@@ -8,10 +8,20 @@ import Image from "next/image";
 import { Combobox } from "@/components/combo-box";
 import { Search } from "lucide-react";
 import { useSearchParams } from "next/navigation";
+import { getBlogs } from "@/sanity/sanity-utils";
+import Card from "./Card";
 
 const categories = ["all", "education", "tech", "business"];
 
-const AllBlog = () => {
+export interface Blog {
+  _id: string;
+  currentSlug: string;
+  imageUrl: string;
+  title: string;
+  smallDescription: string;
+}
+
+const AllBlog = ({ blogs }: { blogs: Blog[] }) => {
   const searchParams = useSearchParams();
   const selectedCategory = categories.includes(
     searchParams.get("category") as string
@@ -49,41 +59,10 @@ const AllBlog = () => {
           </div>
         </form>
       </div>
-      <ol className="grid grid-cols-12 py-10 lg:py-16 lg:gap-16">
-        <div className="col-span-12 mb-16 md:col-span-12 lg:col-span-6 xl:col-span-4">
-          <div className="w-full cursor-pointer">
-            <Link className="space-y-3" href="/">
-              <Image
-                className="relative w-full aspect-[2/1] lg:aspect-[3/2] overflow-auto rounded-lg border"
-                src="/screenshot.png"
-                alt="image"
-                height={640}
-                width={960}
-              />
-              <div className="flex flex-col space-y-4">
-                <div className="text-slate-500 flex space-x-2 text-sm">
-                  <span>19 December 2023</span>
-                  <span>•</span>
-                  <span>6 minute read</span>
-                </div>
-                <div className="space-y-3">
-                  <h2 className="text-3xl text-bold">Top Blog Title</h2>
-                  <p className="text-xl text-muted-foreground line-clamp-3">
-                    Our CEO takes a look at his favorite ships from LWX
-                  </p>
-                </div>
-                <div className=" flex  w-max gap-2">
-                  <div className="flex -space-x-3 ">
-                    <Avatar>
-                      <AvatarImage src="/profile-pic.png" />
-                      <AvatarFallback>CN</AvatarFallback>
-                    </Avatar>
-                  </div>
-                </div>
-              </div>
-            </Link>
-          </div>
-        </div>
+      <ol className="container mx-auto grid grid-cols-12 py-10 lg:py-16 lg:gap-16">
+        {blogs.map((blog) => (
+          <Card blog={blog} />
+        ))}
       </ol>
     </div>
   );
