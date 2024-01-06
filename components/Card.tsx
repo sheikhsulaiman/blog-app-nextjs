@@ -10,7 +10,7 @@ const Card = ({ blog }: { blog: Blog }) => {
   return (
     <div className="col-span-12 mb-16 md:col-span-12 lg:col-span-6 xl:col-span-4">
       <div className="w-full cursor-pointer">
-        <Link className="space-y-3" href={`/${blog.currentSlug}`}>
+        <Link className="space-y-3" href={`/blog/${blog.currentSlug}`}>
           <Image
             className="relative w-full aspect-[2/1] lg:aspect-[3/2] overflow-auto rounded-lg border"
             src={blog.imageUrl}
