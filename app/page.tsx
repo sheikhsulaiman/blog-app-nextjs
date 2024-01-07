@@ -17,10 +17,11 @@ export default async function Home({
   const categoriesObject: [{ title: string }] = await getCategories();
   const categories: string[] = categoriesObject.map((obj) => obj.title);
   const categoriesWithAll: string[] = ["all", ...categories];
+  const latestBlog: Blog = blogs[0];
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <Hero />
+      <Hero item={latestBlog} />
       <Separator />
       <AllBlog blogs={blogs} categories={categoriesWithAll} />
     </main>

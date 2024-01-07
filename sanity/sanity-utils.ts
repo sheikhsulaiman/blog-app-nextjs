@@ -13,12 +13,15 @@ export type Blog = {
   readtime: number;
   _createdAt: string;
   mainImage: any;
+  alt: string;
   categories: [{ title: string }];
   slug: string;
   authors: [
     {
+      _id: string;
       name: string;
       image: Image;
+      jobTitle: string;
     }
   ];
 };
@@ -30,7 +33,6 @@ export async function getCategories() {
 }
 
 export async function getBlogs(category: string | string[] | undefined) {
-  console.log(category);
   if (category !== undefined) {
     return client.fetch(groq`*[_type == 'post' && category->title == '${category}' ] | order(_createdAt desc)
   {
@@ -39,8 +41,9 @@ export async function getBlogs(category: string | string[] | undefined) {
     subtitle,
     readtime,
     _createdAt,
-    authors[]->{name,image},
+    authors[]->{_id,name,image,jobTitle},
     mainImage,
+    "alt":mainImage.alt,
     category->{title},
     "slug":slug.current,
     }`);
@@ -52,8 +55,9 @@ export async function getBlogs(category: string | string[] | undefined) {
     subtitle,
     readtime,
     _createdAt,
-    authors[]->{name,image},
+    authors[]->{_id,name,image,jobTitle},
     mainImage,
+    "alt":mainImage.alt,
     category->{title},
     "slug":slug.current,
     }`);

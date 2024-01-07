@@ -2,7 +2,6 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import Link from "next/link";
 import { Combobox } from "@/components/combo-box";
 import { Search } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -24,6 +23,7 @@ const AllBlog = ({
   )
     ? searchParams.get("category")
     : categories[0];
+
   return (
     <div className="w-full">
       <div className="container mt-6 mx-auto flex w-full items-center justify-between">
@@ -39,7 +39,8 @@ const AllBlog = ({
               className="capitalize "
               onClick={() => {
                 router.replace(
-                  category === "all" ? "/" : `/?category=${category}`
+                  category === "all" ? "/" : `/?category=${category}`,
+                  { scroll: false }
                 );
               }}
             >
@@ -58,6 +59,11 @@ const AllBlog = ({
           </div>
         </form>
       </div>
+      {blogs.length === 0 && (
+        <div className="container mx-auto w-full h-40 flex items-center justify-center border rounded-md my-6 bg-slate-100">
+          <p className="font-semibold text-slate-700">No blogs found!</p>
+        </div>
+      )}
       {blogs.length > 0 && (
         <ol className="container mx-auto grid grid-cols-12 py-10 lg:py-16 lg:gap-16">
           {blogs.map((blog) => (

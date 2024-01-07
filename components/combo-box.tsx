@@ -45,7 +45,12 @@ export function Combobox({ categories }: { categories: string[] }) {
                 key={index}
                 value={category}
                 onSelect={(currentselectedCategory) => {
-                  router.replace(`/?category=${currentselectedCategory}`);
+                  router.replace(
+                    category === "all"
+                      ? "/"
+                      : `/?category=${currentselectedCategory}`,
+                    { scroll: false }
+                  );
                   setOpen(false);
                 }}
                 className="capitalize"

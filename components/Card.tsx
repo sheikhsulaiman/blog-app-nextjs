@@ -13,7 +13,7 @@ const Card = ({ blog }: { blog: Blog }) => {
           <Image
             className="relative w-full aspect-[2/1] lg:aspect-[3/2] overflow-auto rounded-lg border"
             src={urlForImage(blog.mainImage)}
-            alt="image"
+            alt={blog.alt}
             height={640}
             width={960}
           />
@@ -38,7 +38,7 @@ const Card = ({ blog }: { blog: Blog }) => {
             <div className=" flex  w-max gap-2">
               <div className="flex -space-x-3 ">
                 {blog.authors.map((author) => (
-                  <Avatar>
+                  <Avatar key={author._id}>
                     <AvatarImage src={urlForImage(author.image)} />
                     <AvatarFallback>CN</AvatarFallback>
                   </Avatar>
