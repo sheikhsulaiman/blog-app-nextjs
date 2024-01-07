@@ -2,6 +2,8 @@ import { BlogWithBody, getBlog } from "@/sanity/sanity-utils";
 import Image from "next/image";
 import React, { Suspense } from "react";
 import Loading from "./loading";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
 import { CalendarClockIcon, CalendarIcon, ChevronLeft } from "lucide-react";
 import { PortableText } from "@portabletext/react";
 import Link from "next/link";
@@ -13,16 +15,6 @@ interface BlogPageProps {
   params: {
     slug: string;
   };
-}
-
-interface Blog {
-  title: string;
-  _updatedAt: string;
-  _createdAt: string;
-  currentSlug: string;
-  imageUrl?: string;
-  smallDescription: string;
-  content: any;
 }
 
 const BlogPage = async ({ params }: BlogPageProps) => {
@@ -40,19 +32,72 @@ const BlogPage = async ({ params }: BlogPageProps) => {
               Back
             </Link>
           </div>
-          <div className="col-span-12 lg:col-span-12 xl:col-span-10"></div>
+          <div className="col-span-12 lg:col-span-12 xl:col-span-10">
+            <div className="mb-6 lg:mb-12 max-w-5xl space-y-8">
+              <div className="space-y-4">
+                <Link href={"/"} className="text-green-500 hidden lg:inline">
+                  Blog
+                </Link>
+                <h1 className="text-2xl sm:text-4xl">{data.title}</h1>
+                <div>
+                  <div className="flex space-x-3 text-sm text-muted-foreground">
+                    <p>
+                      {Intl.DateTimeFormat("en-US", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      }).format(new Date(data._createdAt))}
+                    </p>
+                    <p>•</p>
+                    <p>{data.readtime} minutes read</p>
+                  </div>
+                  <div className="hidden lg:flex justify-between">
+                    <div className="flex-1 flex flex-col gap-3 pt-6 md:flex-row md:gap-0 lg:gap-3">
+                      {data.authors.map((author) => (
+                        <div key={author._id} className=" flex  w-max gap-2">
+                          <div className="flex -space-x-3 ">
+                            <Avatar className="z-10">
+                              <AvatarImage src={urlForImage(author.image)} />
+                              <AvatarFallback>CN</AvatarFallback>
+                            </Avatar>
+                          </div>
+                          <div className="flex flex-col">
+                            <span className="text-foreground font-semibold m-0 text-sm">
+                              {author.name}
+                            </span>
+                            <span className="text-muted-foreground m-0 text-xs">
+                              {author.jobTitle}
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="grid grid-cols-12 lg:gap-16 xl:gap-8">
+                <div className="col-span-12 lg:col-span-7 xl:col-span-7">
+                  <Suspense fallback={<Loading />}>
+                    <Image
+                      alt={data.alt}
+                      src={urlForImage(data.mainImage)}
+                      height={700}
+                      width={900}
+                      className="w-full h-auto rounded-lg"
+                    />
+                  </Suspense>
+                  <article>
+                    <div className=" mt-16 prose prose-stone dark:prose-invert">
+                      <PortableText value={data.body} />
+                    </div>
+                  </article>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <Suspense fallback={<Loading />}>
-          <Image
-            alt={data.alt}
-            src={urlForImage(data.mainImage)}
-            height={700}
-            width={900}
-            className="w-full h-auto rounded-lg"
-          />
-        </Suspense>
 
-        <div className="border p-2 rounded-sm my-2 w-full">
+        {/* <div className="border p-2 rounded-sm my-2 w-full">
           <h1 className="sm:text-2xl md:text-3xl font-extrabold text-center my-1">
             {data.title}
           </h1>
@@ -89,7 +134,7 @@ const BlogPage = async ({ params }: BlogPageProps) => {
 
         <div className=" mt-16 prose prose-stone dark:prose-invert">
           <PortableText value={data.body} />
-        </div>
+        </div> */}
       </div>
     </main>
   );

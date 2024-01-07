@@ -13,7 +13,7 @@ const Hero = ({ item }: { item: Blog }) => {
           <div className="w-full cursor-pointer">
             <Link
               className="grid gap-8 lg:grid-cols-2 lg:gap-16"
-              href={`/${item.slug}`}
+              href={`/blog/${item.slug}`}
             >
               <Image
                 className="relative w-full aspect-[2/1] lg:aspect-[3/2] overflow-auto rounded-lg border"
