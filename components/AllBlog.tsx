@@ -1,27 +1,23 @@
 "use client";
 import React from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
-import Image from "next/image";
 import { Combobox } from "@/components/combo-box";
 import { Search } from "lucide-react";
-import { useSearchParams } from "next/navigation";
-import { getBlogs } from "@/sanity/sanity-utils";
+import { useRouter, useSearchParams } from "next/navigation";
 import Card from "./Card";
+import { Blog } from "@/sanity/sanity-utils";
 
-const categories = ["all", "education", "tech", "business"];
+const AllBlog = ({
+  blogs,
+  categories,
+}: {
+  blogs: Blog[];
+  categories: string[];
+}) => {
+  const router = useRouter();
 
-export interface Blog {
-  _id: string;
-  currentSlug: string;
-  imageUrl: string;
-  title: string;
-  smallDescription: string;
-}
-
-const AllBlog = ({ blogs }: { blogs: Blog[] }) => {
   const searchParams = useSearchParams();
   const selectedCategory = categories.includes(
     searchParams.get("category") as string
@@ -29,23 +25,26 @@ const AllBlog = ({ blogs }: { blogs: Blog[] }) => {
     ? searchParams.get("category")
     : categories[0];
   return (
-    <div>
+    <div className="w-full">
       <div className="container mt-6 mx-auto flex w-full items-center justify-between">
         <div className="lg:hidden">
           <Combobox categories={categories} />
         </div>
         <div className="hidden lg:flex items-center flex-grow gap-x-2">
           {categories.map((category, index) => (
-            <Link href={`/?category=${category}`}>
-              <Button
-                key={index}
-                variant={selectedCategory === category ? "default" : "outline"}
-                size={"sm"}
-                className="capitalize "
-              >
-                {category}
-              </Button>
-            </Link>
+            <Button
+              key={index}
+              variant={selectedCategory === category ? "default" : "outline"}
+              size={"sm"}
+              className="capitalize "
+              onClick={() => {
+                router.replace(
+                  category === "all" ? "/" : `/?category=${category}`
+                );
+              }}
+            >
+              {category}
+            </Button>
           ))}
         </div>
         <form>
@@ -59,11 +58,13 @@ const AllBlog = ({ blogs }: { blogs: Blog[] }) => {
           </div>
         </form>
       </div>
-      <ol className="container mx-auto grid grid-cols-12 py-10 lg:py-16 lg:gap-16">
-        {blogs.map((blog) => (
-          <Card blog={blog} />
-        ))}
-      </ol>
+      {blogs.length > 0 && (
+        <ol className="container mx-auto grid grid-cols-12 py-10 lg:py-16 lg:gap-16">
+          {blogs.map((blog) => (
+            <Card blog={blog} key={blog._id} />
+          ))}
+        </ol>
+      )}
     </div>
   );
 };

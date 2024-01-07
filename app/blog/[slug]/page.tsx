@@ -72,7 +72,9 @@ const BlogPage = async ({ params }: BlogPageProps) => {
             </div>
           </div>
         </div>
-        <p>{data.smallDescription}</p>
+        <p className="mt-8 text-xl text-muted-foreground">
+          {data.smallDescription}
+        </p>
         <div className=" mt-16 prose prose-stone dark:prose-invert">
           <PortableText value={data.content} />
         </div>
