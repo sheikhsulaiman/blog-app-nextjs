@@ -14,7 +14,7 @@ export type Blog = {
   _createdAt: string;
   mainImage: any;
   alt: string;
-  categories: [{ title: string }];
+  category: { title: string };
   slug: string;
   authors: [
     {
@@ -24,6 +24,26 @@ export type Blog = {
       jobTitle: string;
     }
   ];
+};
+export type BlogWithBody = {
+  _id: string;
+  title: string;
+  _updatedAt: string;
+  readtime: number;
+  _createdAt: string;
+  mainImage: any;
+  alt: string;
+  category: { title: string };
+
+  authors: [
+    {
+      _id: string;
+      name: string;
+      image: Image;
+      jobTitle: string;
+    }
+  ];
+  body: any;
 };
 
 export async function getCategories() {
@@ -65,13 +85,17 @@ export async function getBlogs(category: string | string[] | undefined) {
 }
 
 export async function getBlog(currentSlug: string) {
-  return client.fetch(groq`*[_type == 'blog' && slug.current == '${currentSlug}']{
-          title,
-          _updatedAt,
-          _createdAt,
-          "currentSlug":slug.current,
-          "imageUrl": titleImage.asset->url,
-          smallDescription,
-          content,
-      } [0]`);
+  return client.fetch(groq`*[_type == 'post' && slug.current == '${currentSlug}']
+  {
+      _id,
+      title,
+      "category":category->{title},
+      _createdAt,
+      _updatedAt,
+      authors[]->{_id,name,image,jobTitle},
+      mainImage,
+      alt,
+      readtime,
+      body,
+  }[0]`);
 }

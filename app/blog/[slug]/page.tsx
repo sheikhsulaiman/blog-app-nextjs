@@ -1,9 +1,11 @@
-import { getBlog } from "@/sanity/sanity-utils";
+import { BlogWithBody, getBlog } from "@/sanity/sanity-utils";
 import Image from "next/image";
 import React, { Suspense } from "react";
 import Loading from "./loading";
-import { CalendarClockIcon, CalendarIcon } from "lucide-react";
+import { CalendarClockIcon, CalendarIcon, ChevronLeft } from "lucide-react";
 import { PortableText } from "@portabletext/react";
+import Link from "next/link";
+import { urlForImage } from "@/sanity/lib/image";
 
 export const revalidate = 30; // revalidate at most every 30 seconds
 
@@ -24,14 +26,26 @@ interface Blog {
 }
 
 const BlogPage = async ({ params }: BlogPageProps) => {
-  const data: Blog = await getBlog(params.slug);
+  const data: BlogWithBody = await getBlog(params.slug);
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className=" gap-2 max-w-5xl w-full items-center justify-between  text-sm lg:flex flex-wrap">
+    <main className="relative min-h-screen overflow-x-hidden">
+      <div className="container mx-auto px-6 py-4 md:py-8 xl:py-16 sm:px-16 xl:px-20">
+        <div className="grid grid-cols-12 gap-4">
+          <div className="hidden col-span-12 xl:block lg:col-span-2">
+            <Link
+              href={"/"}
+              className="text-foreground-lighter font-semibold hover:text-foreground flex cursor-pointer items-center text-sm transition"
+            >
+              <ChevronLeft />
+              Back
+            </Link>
+          </div>
+          <div className="col-span-12 lg:col-span-12 xl:col-span-10"></div>
+        </div>
         <Suspense fallback={<Loading />}>
           <Image
-            alt={params.slug}
-            src={data.imageUrl as string}
+            alt={data.alt}
+            src={urlForImage(data.mainImage)}
             height={700}
             width={900}
             className="w-full h-auto rounded-lg"
@@ -72,11 +86,9 @@ const BlogPage = async ({ params }: BlogPageProps) => {
             </div>
           </div>
         </div>
-        <p className="mt-8 text-xl text-muted-foreground">
-          {data.smallDescription}
-        </p>
+
         <div className=" mt-16 prose prose-stone dark:prose-invert">
-          <PortableText value={data.content} />
+          <PortableText value={data.body} />
         </div>
       </div>
     </main>
