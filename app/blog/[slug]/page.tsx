@@ -87,10 +87,35 @@ const BlogPage = async ({ params }: BlogPageProps) => {
                     />
                   </Suspense>
                   <article>
-                    <div className=" mt-16 prose prose-stone dark:prose-invert">
+                    <div className=" mt-16 prose ">
                       <PortableText value={data.body} />
                     </div>
                   </article>
+                </div>
+                <div className="col-span-12 space-y-8 lg:col-span-5 xl:col-span-3 xl:col-start-9">
+                  <div className="space-y-6 lg:sticky lg:top-24 lg:mb-48">
+                    <div className="hidden lg:block">
+                      <div className="space-y-8 py-8 lg:py-0">
+                        <div>
+                          <div className="flex flex-wrap gap-2">tags map</div>
+                        </div>
+                        <div>
+                          <div>
+                            <p className="text-foreground mb-4">On this page</p>
+                            {/* <div className="prose-toc">{data.body}</div> */}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="mb-4">
+                        <p className="text-foreground text-sm">
+                          Related articles
+                        </p>
+                      </div>
+                      <div className="space-y-2"></div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
