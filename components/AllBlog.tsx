@@ -60,8 +60,8 @@ const AllBlog = ({
         </form>
       </div>
       {blogs.length === 0 && (
-        <div className="container mx-auto w-full h-40 flex items-center justify-center border rounded-md my-6 bg-slate-100">
-          <p className="font-semibold text-slate-700">No blogs found!</p>
+        <div className="container mx-auto w-full h-40 flex items-center justify-center border rounded-md my-6 bg-slate-100 dark:bg-slate-900">
+          <p className="font-semibold text-muted-foreground">No blogs found!</p>
         </div>
       )}
       {blogs.length > 0 && (

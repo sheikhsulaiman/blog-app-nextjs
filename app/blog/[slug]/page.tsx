@@ -88,7 +88,7 @@ const BlogPage = async ({ params }: BlogPageProps) => {
                     />
                   </Suspense>
                   <article>
-                    <div className=" mt-16 prose ">
+                    <div className=" mt-16 prose dark:prose-invert ">
                       <PortableText value={data.body} components={RichText} />
                     </div>
                   </article>
