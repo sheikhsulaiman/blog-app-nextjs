@@ -4,10 +4,11 @@ import React, { Suspense } from "react";
 import Loading from "./loading";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-import { CalendarClockIcon, CalendarIcon, ChevronLeft } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 import { PortableText } from "@portabletext/react";
 import Link from "next/link";
 import { urlForImage } from "@/sanity/lib/image";
+import { RichText } from "@/components/RichText";
 
 export const revalidate = 30; // revalidate at most every 30 seconds
 
@@ -88,7 +89,7 @@ const BlogPage = async ({ params }: BlogPageProps) => {
                   </Suspense>
                   <article>
                     <div className=" mt-16 prose ">
-                      <PortableText value={data.body} />
+                      <PortableText value={data.body} components={RichText} />
                     </div>
                   </article>
                 </div>
