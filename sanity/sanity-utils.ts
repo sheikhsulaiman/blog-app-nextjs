@@ -83,6 +83,21 @@ export async function getBlogs(category: string | string[] | undefined) {
     }`);
   }
 }
+export async function getLatestBlog() {
+  return client.fetch(groq`*[_type == 'post'] | order(_createdAt desc)
+  {
+    _id,
+    title,
+    subtitle,
+    readtime,
+    _createdAt,
+    authors[]->{_id,name,image,jobTitle},
+    mainImage,
+    "alt":mainImage.alt,
+    category->{title},
+    "slug":slug.current,
+    }[0]`);
+}
 
 export async function getBlog(currentSlug: string) {
   return client.fetch(groq`*[_type == 'post' && slug.current == '${currentSlug}']

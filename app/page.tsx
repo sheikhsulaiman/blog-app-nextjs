@@ -3,7 +3,12 @@ import Hero from "@/components/Hero";
 import { Separator } from "@/components/ui/separator";
 
 import AllBlog from "@/components/AllBlog";
-import { getBlogs, Blog, getCategories } from "@/sanity/sanity-utils";
+import {
+  getBlogs,
+  Blog,
+  getCategories,
+  getLatestBlog,
+} from "@/sanity/sanity-utils";
 
 export const revalidate = 0;
 
@@ -17,7 +22,7 @@ export default async function Home({
   const categoriesObject: [{ title: string }] = await getCategories();
   const categories: string[] = categoriesObject.map((obj) => obj.title);
   const categoriesWithAll: string[] = ["all", ...categories];
-  const latestBlog: Blog = blogs[0];
+  const latestBlog: Blog = await getLatestBlog();
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
