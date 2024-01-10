@@ -34,6 +34,7 @@ export type BlogWithBody = {
   mainImage: any;
   alt: string;
   category: { title: string };
+  tags: [{ tagname: string }];
 
   authors: [
     {
@@ -112,5 +113,6 @@ export async function getBlog(currentSlug: string) {
       alt,
       readtime,
       body,
+      tags[]->{tagname}
   }[0]`);
 }

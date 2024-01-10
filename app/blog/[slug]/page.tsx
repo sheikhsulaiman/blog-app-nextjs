@@ -3,6 +3,8 @@ import Image from "next/image";
 import React, { Suspense } from "react";
 import Loading from "./loading";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+
 import slugify from "slugify";
 
 import { ChevronLeft } from "lucide-react";
@@ -104,7 +106,11 @@ const BlogPage = async ({ params }: BlogPageProps) => {
                     <div className="hidden  lg:block">
                       <div className="space-y-8 py-8 lg:py-0">
                         <div>
-                          <div className="flex flex-wrap gap-2">tags map</div>
+                          <div className="flex flex-wrap gap-2">
+                            {data.tags.map((tag) => (
+                              <Badge variant="outline">{tag.tagname}</Badge>
+                            ))}
+                          </div>
                         </div>
                         <div>
                           <div className="space-y-2">
