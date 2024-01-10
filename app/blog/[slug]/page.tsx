@@ -3,6 +3,7 @@ import Image from "next/image";
 import React, { Suspense } from "react";
 import Loading from "./loading";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import slugify from "slugify";
 
 import { ChevronLeft } from "lucide-react";
 import { PortableText } from "@portabletext/react";
@@ -20,6 +21,11 @@ interface BlogPageProps {
 
 const BlogPage = async ({ params }: BlogPageProps) => {
   const data: BlogWithBody = await getBlog(params.slug);
+  const filteredItems = data.body.filter((item: any) => item.style === "h2");
+  const rawTocs = filteredItems.map((element: any) =>
+    element.children.map((e: any) => e.text)
+  );
+  const tocs = flattenAndExtractStrings(rawTocs);
   return (
     <main className="relative min-h-screen overflow-x-hidden">
       <div className="container mx-auto px-6 py-4 md:py-8 xl:py-16 sm:px-16 xl:px-20">
@@ -93,17 +99,25 @@ const BlogPage = async ({ params }: BlogPageProps) => {
                     </div>
                   </article>
                 </div>
-                <div className="col-span-12 space-y-8 lg:col-span-5 xl:col-span-3 xl:col-start-9">
-                  <div className="space-y-6 lg:sticky lg:top-24 lg:mb-48">
-                    <div className="hidden lg:block">
+                <div className="col-span-12 relative  h-min  space-y-8 lg:col-span-5 xl:col-span-3 xl:col-start-9">
+                  <div className="space-y-6 lg:sticky  lg:top-24 lg:mb-48">
+                    <div className="hidden  lg:block">
                       <div className="space-y-8 py-8 lg:py-0">
                         <div>
                           <div className="flex flex-wrap gap-2">tags map</div>
                         </div>
                         <div>
-                          <div>
-                            <p className="text-foreground mb-4">On this page</p>
-                            {/* <div className="prose-toc">{data.body}</div> */}
+                          <div className="space-y-2">
+                            <p className="text-xl  mb-4">On this page</p>
+                            {tocs.map((toc: string) => (
+                              <Link
+                                className="block text-muted-foreground hover:text-primary"
+                                key={slugify(toc)}
+                                href={"#" + slugify(toc)}
+                              >
+                                {toc}
+                              </Link>
+                            ))}
                           </div>
                         </div>
                       </div>
@@ -164,6 +178,20 @@ const BlogPage = async ({ params }: BlogPageProps) => {
       </div>
     </main>
   );
+};
+
+// Function to flatten nested arrays and extract strings
+const flattenAndExtractStrings = (arr: any) => {
+  return arr.reduce((result: any, current: any) => {
+    if (Array.isArray(current)) {
+      // Recursively flatten nested arrays
+      result = result.concat(flattenAndExtractStrings(current));
+    } else if (typeof current === "string") {
+      // If the current element is a string, add it to the result array
+      result.push(current);
+    }
+    return result;
+  }, []);
 };
 
 export default BlogPage;

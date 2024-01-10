@@ -2,6 +2,18 @@ import { urlForImage } from "@/sanity/lib/image";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import {
+  PortableText,
+  toPlainText,
+  PortableTextComponents,
+} from "@portabletext/react";
+import slugify from "slugify";
+
+const LinkableHeader = ({ children, value }: { children: any; value: any }) => {
+  // `value` is the single Portable Text block of this header
+  const slug = slugify(toPlainText(value));
+  return <h2 id={slug}>{children}</h2>;
+};
 
 export const RichText = {
   types: {
@@ -31,9 +43,7 @@ export const RichText = {
     h1: ({ children }: any) => (
       <h1 className="text-4xl py-10 font-bold">{children}</h1>
     ),
-    h2: ({ children }: any) => (
-      <h2 className="text-3xl py-10 font-bold">{children}</h2>
-    ),
+    h2: LinkableHeader,
     h3: ({ children }: any) => (
       <h3 className="text-2xl py-10 font-bold">{children}</h3>
     ),
