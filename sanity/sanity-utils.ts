@@ -35,6 +35,7 @@ export type BlogWithBody = {
   alt: string;
   category: { title: string };
   tags: [{ tagname: string }];
+  relatedblogs: [{ _id: string; title: string; slug: string }];
 
   authors: [
     {
@@ -106,6 +107,7 @@ export async function getBlog(currentSlug: string) {
       _id,
       title,
       "category":category->{title},
+      relatedblogs[]->{_id,title,"slug":slug.current},
       _createdAt,
       _updatedAt,
       authors[]->{_id,name,image,jobTitle},

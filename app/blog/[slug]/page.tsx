@@ -130,9 +130,20 @@ const BlogPage = async ({ params }: BlogPageProps) => {
                     </div>
                     <div>
                       <div className="mb-4">
-                        <p className="text-foreground text-sm">
-                          Related articles
-                        </p>
+                        <div className="text-foreground text-sm">
+                          <h1 className="text-xl mb-4">Related Blogs</h1>
+                          {data.relatedblogs &&
+                            data.relatedblogs.map((relatedBlog) => (
+                              <Link
+                                key={relatedBlog._id}
+                                href={`/blog/${relatedBlog.slug}`}
+                              >
+                                <p className="text-muted-foreground hover:text-primary">
+                                  {relatedBlog.title}
+                                </p>
+                              </Link>
+                            ))}
+                        </div>
                       </div>
                       <div className="space-y-2"></div>
                     </div>

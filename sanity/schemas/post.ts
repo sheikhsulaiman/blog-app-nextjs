@@ -42,6 +42,12 @@ export default defineType({
       of: [{ type: "reference", to: [{ type: "tags" }] }],
     }),
     defineField({
+      name: "relatedblogs",
+      title: "Related Blogs",
+      type: "array",
+      of: [{ type: "reference", to: [{ type: "post" }] }],
+    }),
+    defineField({
       name: "mainImage",
       title: "Main image",
       type: "image",
